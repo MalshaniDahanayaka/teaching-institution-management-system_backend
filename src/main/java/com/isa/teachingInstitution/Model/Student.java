@@ -1,7 +1,10 @@
 package com.isa.teachingInstitution.Model;
 
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
+@NoArgsConstructor
 @Entity
 @Table(name="student")
 public class Student extends User{

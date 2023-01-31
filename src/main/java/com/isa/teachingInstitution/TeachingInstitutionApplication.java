@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class TeachingInstitutionApplication {
 
-	public static void main(MysqlxDatatypes.Scalar.String[] args) {
+	public static void main(String[] args) {
 		SpringApplication.run(TeachingInstitutionApplication.class, args);
 	}
 
