@@ -10,8 +10,6 @@ public class CorsConfig implements WebMvcConfigurer{
   private static final String POST = "POST";
   private static final String PUT = "PUT";
   private static final String DELETE = "DELETE";
-
-
     @Override
     public void addCorsMappings(CorsRegistry registry) {
       registry.addMapping("/**")
