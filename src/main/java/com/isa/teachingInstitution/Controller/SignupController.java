@@ -1,37 +1,26 @@
 package com.isa.teachingInstitution.Controller;
 
-import com.isa.teachingInstitution.Exceptions.SaveDataException;
-import com.isa.teachingInstitution.Model.Request.StudentSignup;
+import com.isa.teachingInstitution.Model.Request.SignupRequest;
+import com.isa.teachingInstitution.Model.Student;
+import com.isa.teachingInstitution.Model.Teacher;
+import com.isa.teachingInstitution.Model.User;
 import com.isa.teachingInstitution.Service.SignupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/signup")
+@RequestMapping("/api/v1")
 public class SignupController {
-
-    @GetMapping("/test")
-    public String test() {
-        return "Testing";
-    }
-
     @Autowired
     private SignupService signupService;
 
-    @PostMapping("/student")
-    public ResponseEntity<String> getStudentSignup(@RequestBody StudentSignup studentSignup){
-        try {
+    @PostMapping("/signup")
+    public User signup(@RequestBody SignupRequest signupRequest){
 
-            return new ResponseEntity<>(signupService.saveStudentDetails(studentSignup), HttpStatus.CREATED);
-
-        }catch (SaveDataException ex){
-
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
+        System.out.println(signupRequest.getFirstName());
+        return signupService.createUser(signupRequest);
     }
 
 }

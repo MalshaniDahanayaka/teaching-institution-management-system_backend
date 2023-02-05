@@ -1,31 +1,77 @@
 package com.isa.teachingInstitution.Service;
 
-import com.isa.teachingInstitution.Exceptions.SaveDataException;
-import com.isa.teachingInstitution.Model.Request.StudentSignup;
+import com.isa.teachingInstitution.Model.Request.SignupRequest;
 import com.isa.teachingInstitution.Model.Student;
+import com.isa.teachingInstitution.Model.Teacher;
+import com.isa.teachingInstitution.Model.User;
 import com.isa.teachingInstitution.Repository.StudentRepository;
+import com.isa.teachingInstitution.Repository.TeacherRepository;
+import com.isa.teachingInstitution.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.util.Objects;
+
+import java.util.Objects;
 
 @Service
 public class SignupService {
     @Autowired
     private StudentRepository studentRepository;
-    public String saveStudentDetails(StudentSignup studentSignup) throws SaveDataException {
+    @Autowired
+    private TeacherRepository teacherRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-        try {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    public String getEncodePassword(String password) {
+        return passwordEncoder.encode(password);
+    }
 
-            Student student = new Student(studentSignup.getUsername(), studentSignup.getEmail(), studentSignup.getPassword(),
-                    studentSignup.getFirstName(), studentSignup.getLastName(), studentSignup.getStudentID(),
-                    studentSignup.getDepartment(), studentSignup.getAddress());
+
+    public User createUser(SignupRequest signupRequest){
+
+        if(Objects.equals(signupRequest.getRole().toLowerCase(), "student")){
+
+            Student student = new Student();
+            student.setFirstName(signupRequest.getFirstName());
+            student.setLastName(signupRequest.getLastName());
+            student.setUsername(signupRequest.getUsername());
+            student.setEmail(signupRequest.getEmail());
+            student.setPassword(getEncodePassword(signupRequest.getPassword()));
+            student.setRole(signupRequest.getRole());
+            student.setStudentID(signupRequest.getUserID());
 
             studentRepository.save(student);
 
-        }catch(Exception error){
-
-            throw new SaveDataException("Error saving data" + studentSignup.getUsername(), error);
         }
 
-        return "success";
+        if(Objects.equals(signupRequest.getRole().toLowerCase(), "teacher")){
+
+            Teacher teacher = new Teacher();
+            teacher.setFirstName(signupRequest.getFirstName());
+            teacher.setLastName(signupRequest.getLastName());
+            teacher.setUsername(signupRequest.getUsername());
+            teacher.setEmail(signupRequest.getEmail());
+            teacher.setRole(signupRequest.getRole());
+            teacher.setPassword(getEncodePassword(signupRequest.getPassword()));
+            teacher.setTeacherID(signupRequest.getUserID());
+
+            teacherRepository.save(teacher);
+
+        }
+
+        User user = new User();
+        user.setFirstName(signupRequest.getFirstName());
+        user.setLastName(signupRequest.getLastName());
+        user.setUsername(signupRequest.getUsername());
+        user.setEmail(signupRequest.getEmail());
+        user.setPassword(getEncodePassword((signupRequest.getPassword())));
+        user.setRole(signupRequest.getRole());
+
+
+        return user;
+
     }
 }
