@@ -1,9 +1,9 @@
 package com.isa.teachingInstitution.Repository;
 
-import com.isa.teachingInstitution.Model.Student;
+import com.isa.teachingInstitution.Model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, String> {
+public interface UserRepository extends JpaRepository<User, String> {
 }
