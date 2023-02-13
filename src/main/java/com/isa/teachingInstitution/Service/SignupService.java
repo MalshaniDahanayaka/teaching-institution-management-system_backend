@@ -1,5 +1,6 @@
 package com.isa.teachingInstitution.Service;
 
+import com.isa.teachingInstitution.Exceptions.UserAlreadyExistsException;
 import com.isa.teachingInstitution.Model.Request.SignupRequest;
 import com.isa.teachingInstitution.Model.Student;
 import com.isa.teachingInstitution.Model.Teacher;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class SignupService {
@@ -30,48 +32,55 @@ public class SignupService {
     }
 
 
-    public User createUser(SignupRequest signupRequest){
+    public User createUser(SignupRequest signupRequest) throws UserAlreadyExistsException{
 
-        if(Objects.equals(signupRequest.getRole().toLowerCase(), "student")){
-
-            Student student = new Student();
-            student.setFirstName(signupRequest.getFirstName());
-            student.setLastName(signupRequest.getLastName());
-            student.setUsername(signupRequest.getUsername());
-            student.setEmail(signupRequest.getEmail());
-            student.setPassword(getEncodePassword(signupRequest.getPassword()));
-            student.setRole(signupRequest.getRole());
-            student.setStudentID(signupRequest.getUserID());
-
-            studentRepository.save(student);
-
+        Optional<User> existingUser = userRepository.findById(signupRequest.getUsername());
+        if (existingUser.isPresent()) {
+            throw new UserAlreadyExistsException("Username is already taken, please choose another username.");
         }
+        else {
 
-        if(Objects.equals(signupRequest.getRole().toLowerCase(), "teacher")){
+            if (Objects.equals(signupRequest.getRole().toLowerCase(), "student")) {
 
-            Teacher teacher = new Teacher();
-            teacher.setFirstName(signupRequest.getFirstName());
-            teacher.setLastName(signupRequest.getLastName());
-            teacher.setUsername(signupRequest.getUsername());
-            teacher.setEmail(signupRequest.getEmail());
-            teacher.setRole(signupRequest.getRole());
-            teacher.setPassword(getEncodePassword(signupRequest.getPassword()));
-            teacher.setTeacherID(signupRequest.getUserID());
+                Student student = new Student();
+                student.setFirstName(signupRequest.getFirstName());
+                student.setLastName(signupRequest.getLastName());
+                student.setUsername(signupRequest.getUsername());
+                student.setEmail(signupRequest.getEmail());
+                student.setPassword(getEncodePassword(signupRequest.getPassword()));
+                student.setRole(signupRequest.getRole());
+                student.setStudentID(signupRequest.getUserID());
 
-            teacherRepository.save(teacher);
+                studentRepository.save(student);
 
+            }
+
+            if (Objects.equals(signupRequest.getRole().toLowerCase(), "teacher")) {
+
+                Teacher teacher = new Teacher();
+                teacher.setFirstName(signupRequest.getFirstName());
+                teacher.setLastName(signupRequest.getLastName());
+                teacher.setUsername(signupRequest.getUsername());
+                teacher.setEmail(signupRequest.getEmail());
+                teacher.setRole(signupRequest.getRole());
+                teacher.setPassword(getEncodePassword(signupRequest.getPassword()));
+                teacher.setTeacherID(signupRequest.getUserID());
+
+                teacherRepository.save(teacher);
+
+            }
+
+            User user = new User();
+            user.setFirstName(signupRequest.getFirstName());
+            user.setLastName(signupRequest.getLastName());
+            user.setUsername(signupRequest.getUsername());
+            user.setEmail(signupRequest.getEmail());
+            user.setPassword(getEncodePassword((signupRequest.getPassword())));
+            user.setRole(signupRequest.getRole());
+
+
+            return user;
         }
-
-        User user = new User();
-        user.setFirstName(signupRequest.getFirstName());
-        user.setLastName(signupRequest.getLastName());
-        user.setUsername(signupRequest.getUsername());
-        user.setEmail(signupRequest.getEmail());
-        user.setPassword(getEncodePassword((signupRequest.getPassword())));
-        user.setRole(signupRequest.getRole());
-
-
-        return user;
 
     }
 }
