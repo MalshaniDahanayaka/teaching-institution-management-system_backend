@@ -1,5 +1,6 @@
 package com.isa.teachingInstitution.Controller;
 
+import com.isa.teachingInstitution.Exceptions.UserAlreadyExistsException;
 import com.isa.teachingInstitution.Model.Request.SignupRequest;
 import com.isa.teachingInstitution.Model.Student;
 import com.isa.teachingInstitution.Model.Teacher;
@@ -17,10 +18,14 @@ public class SignupController {
     private SignupService signupService;
 
     @PostMapping("/signup")
-    public User signup(@RequestBody SignupRequest signupRequest){
+    public ResponseEntity<String> signup(@RequestBody SignupRequest signupRequest){
 
-        System.out.println(signupRequest.getFirstName());
-        return signupService.createUser(signupRequest);
+        try {
+            signupService.createUser(signupRequest);
+        } catch (UserAlreadyExistsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>("User successfully registered.", HttpStatus.CREATED);
     }
 
 }
