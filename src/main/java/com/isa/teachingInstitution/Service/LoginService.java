@@ -1,5 +1,6 @@
 package com.isa.teachingInstitution.Service;
 
+import com.isa.teachingInstitution.Auth.JwtRequestFilter;
 import com.isa.teachingInstitution.Auth.JwtUtil;
 import com.isa.teachingInstitution.Model.User;
 import com.isa.teachingInstitution.Model.Request.JwtRequest;
@@ -25,6 +26,15 @@ public class LoginService implements UserDetailsService {
   private JwtUtil jwtUtil;
   @Autowired
   private AuthenticationManager authenticationManager;
+  @Autowired
+  private JwtRequestFilter jwtRequestFilter;
+
+
+
+  public void invalidateToken(String token) {
+    jwtRequestFilter.invalidateToken(token);
+  }
+
   public JwtResponse createJwtToken(JwtRequest jwtRequest) throws Exception{
     String username = jwtRequest.getUsername();
     String password = jwtRequest.getPassword();
