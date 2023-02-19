@@ -24,13 +24,11 @@ public class SignupService {
     private TeacherRepository teacherRepository;
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
     public String getEncodePassword(String password) {
         return passwordEncoder.encode(password);
     }
-
 
     public User createUser(SignupRequest signupRequest) throws UserAlreadyExistsException{
 
@@ -77,7 +75,6 @@ public class SignupService {
             user.setEmail(signupRequest.getEmail());
             user.setPassword(getEncodePassword((signupRequest.getPassword())));
             user.setRole(signupRequest.getRole());
-
 
             return user;
         }

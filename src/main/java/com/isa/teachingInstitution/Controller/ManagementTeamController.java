@@ -3,6 +3,7 @@ package com.isa.teachingInstitution.Controller;
 import com.isa.teachingInstitution.Model.Course;
 import com.isa.teachingInstitution.Model.Student;
 import com.isa.teachingInstitution.Model.Teacher;
+import com.isa.teachingInstitution.Model.User;
 import com.isa.teachingInstitution.Repository.CourseRepository;
 import com.isa.teachingInstitution.Repository.ManagementTeamRepository;
 import com.isa.teachingInstitution.Service.ManagementTeamService;
@@ -22,11 +23,20 @@ public class ManagementTeamController {
 
     @GetMapping("/allCourses")
     public List<Course> getAllCourses(){
+
         return managementTeamService.getAllCourses();
     }
     @GetMapping("/allStudents")
-    public List<Student> getAllStudents(){return managementTeamService.getAllStudents();}
+    public List<Student> getAllStudents(){
+        return managementTeamService.getAllStudents();
+    }
 
     @GetMapping("/allTeachers")
-    public List<Teacher> getAllTeachers(){return managementTeamService.getAllTeachers();}
+    public List<Teacher> getAllTeachers(){
+        return managementTeamService.getAllTeachers();
+    }
+    @GetMapping("/allUsers")
+    public List<User> getAllUsers(){
+        return managementTeamService.getAllUsers();
+    }
 }

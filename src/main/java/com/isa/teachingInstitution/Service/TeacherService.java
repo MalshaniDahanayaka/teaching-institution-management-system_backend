@@ -10,6 +10,7 @@ public class TeacherService {
     @Autowired
     private TeacherRepository teacherRepository;
     public Teacher getProfileData(String username){
+
         return teacherRepository.findById(username).get();
     }
 }

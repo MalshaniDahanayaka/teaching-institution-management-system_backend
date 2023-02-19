@@ -53,7 +53,6 @@ public class LoginService implements UserDetailsService {
       throw new UsernameNotFoundException("Username is not found with username: "+ username);
     }
   }
-
   private Set getAuthority(User user) {
     Set<SimpleGrantedAuthority> authorities = new HashSet<>();
     String role = user.getRole();

@@ -10,6 +10,7 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
     public Student getProfileData(String username){
+
         return studentRepository.findById(username).get();
     }
 }

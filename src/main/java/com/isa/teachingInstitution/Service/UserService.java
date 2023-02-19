@@ -12,6 +12,11 @@ public class UserService {
     @Autowired
     private CourseRepository courseRepository;
     public List<Course> getAllCourses(){
-        return courseRepository.findAll();
+
+        try {
+            return courseRepository.findAll();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to retrieve courses from the repository.");
+        }
     }
 }
